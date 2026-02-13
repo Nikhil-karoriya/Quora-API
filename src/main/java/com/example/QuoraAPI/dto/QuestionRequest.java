@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateQuestionRequest {
+public class QuestionRequest {
 
     private String title;
     private String body;

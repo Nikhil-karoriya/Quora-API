@@ -1,9 +1,13 @@
 package com.example.QuoraAPI.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.example.QuoraAPI.dto.AnswerRequest;
+import com.example.QuoraAPI.dto.AnswerResponse;
 import com.example.QuoraAPI.models.Answer;
 import com.example.QuoraAPI.models.Question;
 import com.example.QuoraAPI.models.User;
@@ -23,22 +27,55 @@ public class AnswerService {
     
     private final UserRepository userRepository;
     
-    public Answer addAnswer(UUID questionId, Answer answer) {
+    public AnswerResponse addAnswer(UUID questionId, AnswerRequest answerRequest) {
         
         Question question= questionRepository.findById(questionId).get();
+        
+        Answer answer= Answer.builder()
+                             .text(answerRequest.getText())
+                             .user(userRepository.findById(answerRequest.getUserId()).get())
+                             .build();
 
         answer.setQuestion(question);
 
-        return answerRepository.save(answer);                                         
+        answerRepository.save(answer);
+        
+        return creatAnswerResponse(answer);
     }
 
-    public Answer editAnswer(UUID answerId, String text) {
+    public AnswerResponse editAnswer(UUID answerId, String text) {
 
         Answer answer= answerRepository.findById(answerId).get();
 
         answer.setText(text);
 
-        return answerRepository.save(answer);
+        answerRepository.save(answer);
+
+        return creatAnswerResponse(answer);
     }
+
+    public List<AnswerResponse> getAllAnswers() {
+        
+        List<Answer> answers= answerRepository.findAll();
+
+        List<AnswerResponse> responses= new ArrayList<>();
+        
+        for(Answer answer: answers){
+            responses.add(creatAnswerResponse(answer));
+        }
+
+        return responses;
+
+    }
+
+    private AnswerResponse creatAnswerResponse(Answer answer){
+        return AnswerResponse.builder()
+                             .text(answer.getText())
+                             .userId(answer.getUser().getId())
+                             .questionId(answer.getQuestion().getId())
+                             .answerId(answer.getId())
+                             .build();
+    }
+
     
 }

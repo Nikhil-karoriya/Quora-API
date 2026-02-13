@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.example.QuoraAPI.dto.CreateQuestionRequest;
+import com.example.QuoraAPI.dto.QuestionRequest;
 import com.example.QuoraAPI.dto.QuestionResponse;
 import com.example.QuoraAPI.models.Question;
 import com.example.QuoraAPI.models.Topic;
@@ -36,7 +36,7 @@ public class QuestionService {
     private final String UNIVERSAL_TAG = "universal";
     
     @Transactional
-    public QuestionResponse addQuestion(CreateQuestionRequest questionDto) {
+    public QuestionResponse addQuestion(QuestionRequest questionDto) {
 
         User user= userRepository.findById(questionDto.getUserId()).get();
 
@@ -48,7 +48,7 @@ public class QuestionService {
                                       .title(questionDto.getTitle())
                                       .body(questionDto.getBody())
                                       .user(user)
-                                      .topicQuestions(new HashSet<TopicQuestion>())
+                                      .topicQuestions(new HashSet<>())
                                       .build();
 
         question= questionRepository.save(question);

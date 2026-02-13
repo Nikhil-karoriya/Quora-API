@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.QuoraAPI.dto.LikeRequest;
 import com.example.QuoraAPI.services.LikeService;
 
 import lombok.AllArgsConstructor;
@@ -24,9 +25,9 @@ public class LikeController {
     @PostMapping("/{type}/{id}")
     public ResponseEntity<?> addLike(@PathVariable("type") String type,
                                      @PathVariable("id") UUID id,
-                                     @RequestBody(required = true) UUID userId){
+                                     @RequestBody LikeRequest likeRequest){
 
-        likeService.addLike(type, id, userId);
+        likeService.addLike(type, id, likeRequest);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }

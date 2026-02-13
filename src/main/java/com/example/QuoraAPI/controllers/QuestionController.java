@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.QuoraAPI.dto.CreateQuestionRequest;
+import com.example.QuoraAPI.dto.QuestionRequest;
 import com.example.QuoraAPI.dto.QuestionResponse;
 import com.example.QuoraAPI.models.Question;
 import com.example.QuoraAPI.services.QuestionService;
@@ -28,7 +28,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping
-    public ResponseEntity<QuestionResponse> addQuestion(@RequestBody CreateQuestionRequest questionDto){
+    public ResponseEntity<QuestionResponse> addQuestion(@RequestBody QuestionRequest questionDto){
 
         QuestionResponse question= questionService.addQuestion(questionDto);
 

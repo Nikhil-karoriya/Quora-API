@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.example.QuoraAPI.dto.LikeRequest;
 import com.example.QuoraAPI.models.LikeAnswer;
 import com.example.QuoraAPI.models.LikeComment;
 import com.example.QuoraAPI.models.LikeQuestion;
@@ -41,9 +42,11 @@ public class LikeService {
 
     private final String COMMENTS = "comments"; 
     
-    public void addLike(String type, UUID id, UUID userId) {
+    public void addLike(String type, UUID id, LikeRequest likeRequest) {
+
+        UUID userId= likeRequest.getUserId();
         
-        if(type == ANSWERS){
+        if(type.equals(ANSWERS) ){
             
             LikeAnswer newLike= LikeAnswer.builder()
                                           .user(userRepository.findById(userId).get())
@@ -53,7 +56,7 @@ public class LikeService {
             likeAnswerRepository.save(newLike);
         }
 
-        if(type == QUESTIONS){
+        if(type.equals(QUESTIONS)){
 
             LikeQuestion newLike = LikeQuestion.builder()
                                                .user(userRepository.findById(userId).get())
@@ -63,7 +66,7 @@ public class LikeService {
             likeQuestionRepository.save(newLike);
         }
 
-        if(type == COMMENTS){
+        if(type.equals(COMMENTS)){
             LikeComment newLike = LikeComment.builder()
                                              .user(userRepository.findById(userId).get())
                                              .comment(commentRepository.findById(id).get())
