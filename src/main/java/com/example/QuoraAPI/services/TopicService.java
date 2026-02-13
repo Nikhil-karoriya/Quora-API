@@ -1,19 +1,32 @@
 package com.example.QuoraAPI.services;
 
-import java.util.Set;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.example.QuoraAPI.models.Topic;
+import com.example.QuoraAPI.repositories.TopicRepository;
 
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
 public class TopicService {
 
+    private final TopicRepository topicRepository;
+
     public Topic createTopic(Topic newTopic) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTopic'");
+        
+        Topic topic= topicRepository.findByName(newTopic.getName());
+
+        if(topic == null) return topicRepository.save(newTopic);
+
+        return topic;
     }
 
-    public Set<Topic> getAllTopics() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllTopics'");
+    public List<Topic> getAllTopics() {
+
+        return topicRepository.findAll();
     }
     
 }

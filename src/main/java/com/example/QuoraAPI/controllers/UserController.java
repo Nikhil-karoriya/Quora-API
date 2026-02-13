@@ -25,9 +25,11 @@ public class UserController {
     private final UserService userService;
  
     @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody User newUser){
+    public ResponseEntity<User> registerUser(@RequestBody String username,
+                                             @RequestBody String email, 
+                                             @RequestBody String bio){
         
-        User user= userService.register(newUser);
+        User user= userService.register(username, email, bio);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
@@ -41,19 +43,13 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable("userId") UUID userId){
+    public ResponseEntity<User> updateUser( @PathVariable("userId") UUID userId,
+                                            @RequestBody(required = false) String username,
+                                            @RequestBody(required = false) String email, 
+                                            @RequestBody(required = false) String bio){
 
-        User user= userService.updateUser(userId);
+        User user= userService.updateUser(userId, username, email, bio);
         
         return ResponseEntity.status(HttpStatus.OK).body(user);  
-    }
-
-    @PostMapping("/{userId}/follow/{targetUserId}")
-    public ResponseEntity<?> followUser(@PathVariable("userId") UUID userId,
-                                        @PathVariable("targetUserId") UUID targetUserId){
-        
-        userService.addFollower(userId, targetUserId);
-        
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 }

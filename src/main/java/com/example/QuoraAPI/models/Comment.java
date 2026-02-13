@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Comment extends BaseModel {
     
     @ManyToOne
@@ -24,7 +26,7 @@ public class Comment extends BaseModel {
     private User user;
 
     @Column(nullable = false)
-    private String content;
+    private String text;
 
     @ManyToOne
     @JoinColumn(name = "answer_Id", nullable = false)

@@ -21,20 +21,25 @@ import lombok.AllArgsConstructor;
 public class CommentController {
 
     private final CommentService commentService;
+
+    @PostMapping("/{answerId}/answers")
+    public ResponseEntity<Comment> addCommentOnAnswer( @PathVariable("answerId") UUID answerId, 
+                                                       @RequestBody UUID userId, 
+                                                       @RequestBody String text){
+        
+        Comment comment= commentService.addCommentOnAnswer(answerId, userId, text);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+    }
     
     @PostMapping("/{commentId}/comments")
-    public ResponseEntity<Comment> addComment( @PathVariable("commentId") UUID commentId,
-                                               @RequestBody Comment newComment){
+    public ResponseEntity<Comment> addCommentOnComment( @PathVariable("commentId") UUID commentId,
+                                                        @RequestBody UUID userId, 
+                                                        @RequestBody String text){
         
-        Comment comment = commentService.addComment(commentId, newComment);
+        Comment comment = commentService.addCommentOnComment(commentId, userId, text);
     
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
 
-    @PostMapping("/{commentId}/likes")
-    public ResponseEntity<?> addLike(@PathVariable("commentId") UUID commentId){
-
-        commentService.addLike(commentId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
-    }
 }

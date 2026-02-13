@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.QuoraAPI.models.Answer;
-import com.example.QuoraAPI.models.Comment;
 import com.example.QuoraAPI.services.AnswerService;
 
 import lombok.AllArgsConstructor;
@@ -23,29 +22,24 @@ import lombok.AllArgsConstructor;
 public class AnswerController {
 
     private final AnswerService answerService;
+
+    @PostMapping("/{questionId}") 
+    public ResponseEntity<Answer> addAnswer( @PathVariable("questionId") UUID questionId, 
+                                             @RequestBody(required = true) UUID userId, 
+                                             @RequestBody(required = true) String text){
+        
+        Answer answer= answerService.addAnswer(questionId, userId, text);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(answer);
+    }
     
     @PutMapping("/{answerId}")
-    public ResponseEntity<Answer> editAnswer( @PathVariable("answerId") UUID answerId, 
-                              @RequestBody Answer updatedAnswer){
+    public ResponseEntity<Answer> editAnswer(@PathVariable("answerId") UUID answerId, 
+                                             @RequestBody(required = true) String text){
         
-        Answer answer= answerService.editAnswer(answerId, updatedAnswer);
+        Answer answer= answerService.editAnswer(answerId, text);
         
         return ResponseEntity.status(HttpStatus.OK).body(answer);
     }
 
-    @PostMapping("/{answerId}/comments")
-    public ResponseEntity<Comment> addComment( @PathVariable("answerId") UUID answerId, 
-                                               @RequestBody Comment newComment){
-        
-        Comment comment= answerService.addComment(answerId, newComment);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
-    }
-
-    @PostMapping("/{answerId}/likes")
-    public ResponseEntity<?> addLike(@PathVariable("answerId") UUID answerId){
-
-        answerService.addLike(answerId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
-    }
 }

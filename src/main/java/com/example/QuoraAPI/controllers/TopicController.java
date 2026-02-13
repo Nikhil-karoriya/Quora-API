@@ -1,6 +1,6 @@
 package com.example.QuoraAPI.controllers;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class TopicController {
     private final TopicService topicService;
 
     @PostMapping
-    public ResponseEntity<Topic> createTopic(@RequestBody Topic newTopic){
+    public ResponseEntity<Topic> createTopic(@RequestBody(required = true) Topic newTopic){
 
         Topic topic= topicService.createTopic(newTopic);
         
@@ -31,9 +31,9 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<Topic>> getAllTopics(){
+    public ResponseEntity<List<Topic>> getAllTopics(){
 
-        Set<Topic> topics = topicService.getAllTopics();
+        List<Topic> topics = topicService.getAllTopics();
 
         return ResponseEntity.status(HttpStatus.OK).body(topics);
     }
