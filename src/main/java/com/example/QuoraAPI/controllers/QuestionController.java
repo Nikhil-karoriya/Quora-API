@@ -1,5 +1,6 @@
 package com.example.QuoraAPI.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.QuoraAPI.dto.CreateQuestionRequest;
+import com.example.QuoraAPI.dto.QuestionResponse;
 import com.example.QuoraAPI.models.Question;
 import com.example.QuoraAPI.services.QuestionService;
 
@@ -25,21 +28,21 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping
-    public ResponseEntity<Question> addQuestion(@RequestBody Question question){
+    public ResponseEntity<QuestionResponse> addQuestion(@RequestBody CreateQuestionRequest questionDto){
 
-        questionService.addQuestion(question);
+        QuestionResponse question= questionService.addQuestion(questionDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(question);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Question>> getQuestion
+    public ResponseEntity<List<QuestionResponse>> getQuestion
                              (@RequestParam(value = "text", required = false) String text, 
                               @RequestParam(value = "tag", required = false) String tag){
 
-        List<Question> questions= questionService.getQuestion(text, tag);
-
-        return ResponseEntity.status(HttpStatus.OK).body(questions);
+        List<QuestionResponse> response= questionService.getQuestion(text, tag);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
