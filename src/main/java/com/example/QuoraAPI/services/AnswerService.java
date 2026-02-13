@@ -23,18 +23,13 @@ public class AnswerService {
     
     private final UserRepository userRepository;
     
-    public Answer addAnswer(UUID questionId, UUID userId, String text) {
+    public Answer addAnswer(UUID questionId, Answer answer) {
         
         Question question= questionRepository.findById(questionId).get();
 
-        User user= userRepository.findById(userId).get();
-        
-        Answer newAnswer= Answer.builder()
-                                .user(user)
-                                .question(question)
-                                .build();
+        answer.setQuestion(question);
 
-        return answerRepository.save(newAnswer);                                         
+        return answerRepository.save(answer);                                         
     }
 
     public Answer editAnswer(UUID answerId, String text) {

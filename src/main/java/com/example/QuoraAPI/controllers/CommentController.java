@@ -22,22 +22,19 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/{answerId}/answers")
-    public ResponseEntity<Comment> addCommentOnAnswer( @PathVariable("answerId") UUID answerId, 
-                                                       @RequestBody UUID userId, 
-                                                       @RequestBody String text){
+    @PostMapping("/{answerId}/answer")
+    public ResponseEntity<Comment> addCommentOnAnswer(@RequestBody Comment newComment){
         
-        Comment comment= commentService.addCommentOnAnswer(answerId, userId, text);
+        Comment comment= commentService.addCommentOnAnswer( newComment);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
     
-    @PostMapping("/{commentId}/comments")
-    public ResponseEntity<Comment> addCommentOnComment( @PathVariable("commentId") UUID commentId,
-                                                        @RequestBody UUID userId, 
-                                                        @RequestBody String text){
+    @PostMapping("/{commentId}/comment")
+    public ResponseEntity<Comment> addCommentOnComment(@PathVariable("commentId") UUID commentId,
+                                                       @RequestBody Comment newComment){
         
-        Comment comment = commentService.addCommentOnComment(commentId, userId, text);
+        Comment comment = commentService.addCommentOnComment(commentId, newComment);
     
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }

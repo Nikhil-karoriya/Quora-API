@@ -31,40 +31,25 @@ public class QuestionService {
 
     private final String UNIVERSAL_TAG = "universal";
     
-    public Question addQuestion(UUID userId, String title, String body, List<String> topics) {
-        
-        User user= userRepository.findById(userId).get();
+    public Question addQuestion(Question question) {
 
-        Question newQuestion= Question.builder()
-                                      .user(user)
-                                      .title(title)
-                                      .body(body)
-                                      .build();
+        Set<TopicQuestion> topics= question.getTopicQuestions();
 
-        for(String text: topics){
+        for(TopicQuestion topicQuestion: topics){
             
-            Topic topic= topicRepository.findByName(text);
-
-            if(topic == null){
-
-                topic= Topic.builder()
-                            .name(text)
-                            .build();
-
-                topicRepository.save(topic);
-            }
+            Topic topic= topicQuestion.getTopic();
 
             TopicQuestion newTopicQuestion= TopicQuestion.builder()
-                                                         .question(newQuestion)
+                                                         .question(question)
                                                          .topic(topic)
                                                          .build();
 
             topicQuestionRepository.save(newTopicQuestion);                                    
         }
 
-        addUniversalTag(newQuestion);
+        addUniversalTag(question);
 
-        return questionRepository.save(newQuestion);
+        return questionRepository.save(question);
     }
 
     public List<Question> getQuestion(String text, String tag) {

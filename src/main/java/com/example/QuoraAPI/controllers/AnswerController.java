@@ -25,10 +25,9 @@ public class AnswerController {
 
     @PostMapping("/{questionId}") 
     public ResponseEntity<Answer> addAnswer( @PathVariable("questionId") UUID questionId, 
-                                             @RequestBody(required = true) UUID userId, 
-                                             @RequestBody(required = true) String text){
+                                             @RequestBody Answer answer){
         
-        Answer answer= answerService.addAnswer(questionId, userId, text);
+        answerService.addAnswer(questionId, answer);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(answer);
     }

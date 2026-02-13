@@ -1,5 +1,6 @@
 package com.example.QuoraAPI.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -25,13 +26,17 @@ public class UserController {
     private final UserService userService;
  
     @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody String username,
-                                             @RequestBody String email, 
-                                             @RequestBody String bio){
+    public ResponseEntity<User> registerUser(@RequestBody User user){
         
-        User user= userService.register(username, email, bio);
+        userService.register(user);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(){
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.getAllUsers());
     }
 
     @GetMapping("/{userId}")
@@ -44,11 +49,9 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<User> updateUser( @PathVariable("userId") UUID userId,
-                                            @RequestBody(required = false) String username,
-                                            @RequestBody(required = false) String email, 
-                                            @RequestBody(required = false) String bio){
+                                            @RequestBody User newUser){
 
-        User user= userService.updateUser(userId, username, email, bio);
+        User user= userService.updateUser(userId, newUser);
         
         return ResponseEntity.status(HttpStatus.OK).body(user);  
     }

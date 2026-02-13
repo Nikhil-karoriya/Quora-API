@@ -25,12 +25,9 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping
-    public ResponseEntity<Question> addQuestion(@RequestBody UUID userId,
-                                                @RequestBody String title,
-                                                @RequestBody String body,
-                                        @RequestBody(required = false) List<String> topics){
+    public ResponseEntity<Question> addQuestion(@RequestBody Question question){
 
-        Question question= questionService.addQuestion(userId, title, body, topics);
+        questionService.addQuestion(question);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(question);
     }

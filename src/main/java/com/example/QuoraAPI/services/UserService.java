@@ -1,5 +1,6 @@
 package com.example.QuoraAPI.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,15 +17,9 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User register(String username, String email, String bio) {
-
-        User newUser= User.builder()
-                          .username(username)
-                          .email(email)
-                          .bio(bio)
-                          .build();
-
-        return userRepository.save(newUser);                  
+    public User register(User user) {
+        
+        return userRepository.save(user);                  
     }
 
     public User getUserInfo(UUID userId) {
@@ -32,30 +27,28 @@ public class UserService {
         return userRepository.findById(userId).get();
     }
 
-    public User updateUser(UUID userId, String username, String email, String bio) {
+    public User updateUser(UUID userId, User newUser) {
 
         Optional<User> userDb= userRepository.findById(userId);
 
         User user= userDb.get();
         
         if(user == null){
-            
-            User newUser= User.builder()
-                          .username(username)
-                          .email(email)
-                          .bio(bio)
-                          .build();
-
             return userRepository.save(newUser);
         }
         
-        if(username != null) user.setUsername(username);
+        if(newUser.getUsername() != null) user.setUsername(newUser.getUsername());
         
-        if(user.getEmail() != null) user.setEmail(email);
+        if(newUser.getEmail() != null) user.setEmail(newUser.getEmail());
         
-        if(user.getBio() != null) user.setBio(bio);
+        if(newUser.getBio() != null) user.setBio(newUser.getBio());
         
         return userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        
+        return userRepository.findAll();
     }
     
 }
