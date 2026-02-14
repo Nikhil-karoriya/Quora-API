@@ -40,4 +40,9 @@ public class Comment extends BaseModel {
 
     @OneToMany(mappedBy = "comment")
     private Set<LikeComment> likes;
+
+    public String getProperComment(){
+
+        return text + " - " + user.getUsername();
+    }
 }

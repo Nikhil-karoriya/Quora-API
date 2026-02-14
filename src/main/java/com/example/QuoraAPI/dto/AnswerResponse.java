@@ -1,5 +1,6 @@
 package com.example.QuoraAPI.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -15,11 +16,16 @@ import lombok.Setter;
 @Builder
 public class AnswerResponse {
     
+    private UUID answerId;
+    
     private String text;
 
-    private UUID userId;
+    private String user;
 
-    private UUID questionId;
+    private String question;
 
-    private UUID answerId;
+
+    private List<String> comments;
+
+    private List<String> likes;
 }

@@ -1,14 +1,18 @@
 package com.example.QuoraAPI.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.example.QuoraAPI.dto.QuestionRequest;
 import com.example.QuoraAPI.dto.QuestionResponse;
+import com.example.QuoraAPI.models.Answer;
+import com.example.QuoraAPI.models.LikeQuestion;
 import com.example.QuoraAPI.models.Question;
 import com.example.QuoraAPI.models.Topic;
 import com.example.QuoraAPI.models.TopicQuestion;
@@ -34,10 +38,15 @@ public class QuestionService {
     private final TopicQuestionRepository topicQuestionRepository;
 
     private final String UNIVERSAL_TAG = "universal";
+
+    private final String DEFAULT_TEXT= ".";
     
     @Transactional
     public QuestionResponse addQuestion(QuestionRequest questionDto) {
 
+        questionDto.setTitle(questionDto.getTitle() + DEFAULT_TEXT);
+        questionDto.setBody(questionDto.getBody() + DEFAULT_TEXT);
+        
         User user= userRepository.findById(questionDto.getUserId()).get();
 
         List<String> topics= questionDto.getTopics();
@@ -70,7 +79,7 @@ public class QuestionService {
                                                          .build();
 
             topicQuestionRepository.save(newTopicQuestion);   
-            
+
             question.getTopicQuestions().add(newTopicQuestion);
         }
 
@@ -82,8 +91,12 @@ public class QuestionService {
     public List<QuestionResponse> getQuestion(String text, String tag) {
         
         if(tag == null) tag= UNIVERSAL_TAG;
+
+        if(text == null) text= DEFAULT_TEXT;
         
         List<Question> questions= questionRepository.findByTextAndTag(text, tag);
+
+        formatQuestion(questions);
 
         List<QuestionResponse> response= new ArrayList<>();
         
@@ -93,6 +106,20 @@ public class QuestionService {
         }
 
         return response;
+    }
+
+    private void formatQuestion(List<Question> questions){
+
+        for(Question question: questions){
+            
+            String title= question.getTitle();
+
+            String body= question.getBody();
+            
+            question.setTitle(title.substring(0,title.length()-1));
+
+            question.setBody(body.substring(0, body.length()-1));
+        }
     }
 
     private void addUniversalTag(Question question){
@@ -120,17 +147,29 @@ public class QuestionService {
 
     public QuestionResponse mapToResponse(Question question) {
 
-        List<String> topicNames = question.getTopicQuestions()
-                .stream()
-                .map(tq -> tq.getTopic().getName())
-                .toList();
-
         return QuestionResponse.builder()
                 .id(question.getId())
                 .title(question.getTitle())
                 .body(question.getBody())
                 .username(question.getUser().getUsername())
-                .topics(topicNames)
+                .topics(Optional.ofNullable(question.getTopicQuestions())
+                                .orElse(Collections.emptySet())
+                                .stream()
+                                .map(TopicQuestion::getTopic)
+                                .map(Topic::getName)
+                                .collect(Collectors.toList()))
+
+                .answers(Optional.ofNullable(question.getAnswers())
+                                .orElse(Collections.emptySet())
+                                .stream()
+                                .map(Answer::getText)
+                                .collect(Collectors.toList()))
+                .likes(Optional.ofNullable(question.getLikes())
+                                .orElse(Collections.emptySet())
+                                .stream()
+                                .map(LikeQuestion::getUser)
+                                .map(User::getUsername)
+                                .collect(Collectors.toList()))
                 .build();
     }
 
