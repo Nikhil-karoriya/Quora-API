@@ -24,13 +24,13 @@ public class UserResponse {
 
     private String bio;
 
-    private Set<UUID> questions;
+    private Set<String> questions;
     
-    private Set<UUID> answers;
+    private Set<String> answers;
 
-    private Set<UUID> comments;
+    private Set<String> comments;
     
-    private Set<UUID> followers;
+    private Set<String> followers;
 
-    private Set<UUID> follows;
+    private Set<String> follows;
 }
