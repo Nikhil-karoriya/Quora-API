@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.QuoraAPI.dto.CommentRequest;
 import com.example.QuoraAPI.dto.CommentResponse;
-import com.example.QuoraAPI.models.Comment;
 import com.example.QuoraAPI.services.CommentService;
 
 import lombok.AllArgsConstructor;

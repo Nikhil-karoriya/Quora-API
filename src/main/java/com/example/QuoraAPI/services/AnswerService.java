@@ -10,7 +10,6 @@ import com.example.QuoraAPI.dto.AnswerRequest;
 import com.example.QuoraAPI.dto.AnswerResponse;
 import com.example.QuoraAPI.models.Answer;
 import com.example.QuoraAPI.models.Question;
-import com.example.QuoraAPI.models.User;
 import com.example.QuoraAPI.repositories.AnswerRepository;
 import com.example.QuoraAPI.repositories.QuestionRepository;
 import com.example.QuoraAPI.repositories.UserRepository;

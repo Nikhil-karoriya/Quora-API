@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.QuoraAPI.dto.UserRequest;
+import com.example.QuoraAPI.dto.UserResponse;
 import com.example.QuoraAPI.models.User;
 import com.example.QuoraAPI.services.UserService;
 
@@ -26,33 +28,35 @@ public class UserController {
     private final UserService userService;
  
     @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody User user){
+    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest user){
         
-        userService.register(user);
+        UserResponse response= userService.register(user);
         
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.getAllUsers());
+        List<UserResponse> response= userService.getAllUsers();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserInfo(@PathVariable("userId") UUID userId){
+    public ResponseEntity<UserResponse> getUserInfo(@PathVariable("userId") UUID userId){
         
-        User user= userService.getUserInfo(userId);
+        UserResponse response= userService.getUserInfo(userId);
         
-        return ResponseEntity.status(HttpStatus.OK).body(user);   
+        return ResponseEntity.status(HttpStatus.OK).body(response);   
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser( @PathVariable("userId") UUID userId,
-                                            @RequestBody User newUser){
+    public ResponseEntity<UserResponse> updateUser( @PathVariable("userId") UUID userId,
+                                            @RequestBody UserRequest newUser){
 
-        User user= userService.updateUser(userId, newUser);
+        UserResponse response= userService.updateUser(userId, newUser);
         
-        return ResponseEntity.status(HttpStatus.OK).body(user);  
+        return ResponseEntity.status(HttpStatus.OK).body(response);  
     }
 }

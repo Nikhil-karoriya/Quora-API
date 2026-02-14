@@ -1,8 +1,6 @@
 package com.example.QuoraAPI.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.QuoraAPI.dto.QuestionRequest;
 import com.example.QuoraAPI.dto.QuestionResponse;
-import com.example.QuoraAPI.models.Question;
 import com.example.QuoraAPI.services.QuestionService;
 
 import lombok.AllArgsConstructor;

@@ -1,7 +1,5 @@
 package com.example.QuoraAPI.dto;
 
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnswerRequest {
-    
-    private UUID userId;
-    
-    private String text;
+public class UserRequest {
+
+    private String username;
+
+    private String email;
+
+    private String bio;
 }
