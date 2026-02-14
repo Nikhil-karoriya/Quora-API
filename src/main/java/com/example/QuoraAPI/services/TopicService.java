@@ -1,6 +1,7 @@
 package com.example.QuoraAPI.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -15,18 +16,24 @@ public class TopicService {
 
     private final TopicRepository topicRepository;
 
-    public Topic createTopic(Topic newTopic) {
+    public void createTopic(String newTopic) {
         
-        Topic topic= topicRepository.findByName(newTopic.getName());
+        Topic topic= topicRepository.findByName(newTopic);
 
-        if(topic == null) return topicRepository.save(newTopic);
+        if(topic == null){
 
-        return topic;
+            topic = Topic.builder().name(newTopic).build();
+            
+            topicRepository.save(topic);
+        }
+
     }
 
-    public List<Topic> getAllTopics() {
+    public List<String> getAllTopics() {
 
-        return topicRepository.findAll();
+        return topicRepository.findAll().stream()
+                              .map(Topic::getName)
+                              .collect(Collectors.toList());
     }
     
 }

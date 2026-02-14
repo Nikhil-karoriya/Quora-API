@@ -5,9 +5,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.QuoraAPI.models.Follow;
+import com.example.QuoraAPI.models.User;
 import com.example.QuoraAPI.repositories.FollowRepository;
 import com.example.QuoraAPI.repositories.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -18,14 +20,25 @@ public class FollowService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public void addFollower(UUID userId, UUID targetUserId) {
         
-        Follow newFollow= Follow.builder()
-                                .follower(userRepository.findById(userId).get())
-                                .followee(userRepository.findById(targetUserId).get())
-                                .build();
+        User follower= userRepository.findById(userId).get();
+        
+        User followee= userRepository.findById(targetUserId).get();
+        
+        Follow newFollow= followRepository.findByFollowerAndFollowee(follower, followee);
+        
+        if(newFollow == null){
             
-        followRepository.save(newFollow);                        
+            newFollow= Follow.builder()
+                         .follower(follower)
+                         .followee(followee)
+                         .build();
+            
+            followRepository.save(newFollow);                        
+        }
+            
     }
     
 }

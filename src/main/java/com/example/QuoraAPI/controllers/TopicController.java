@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.QuoraAPI.models.Topic;
 import com.example.QuoraAPI.services.TopicService;
 
 import lombok.AllArgsConstructor;
@@ -23,17 +22,17 @@ public class TopicController {
     private final TopicService topicService;
 
     @PostMapping
-    public ResponseEntity<Topic> createTopic(@RequestBody(required = true) Topic newTopic){
+    public ResponseEntity<String> createTopic(@RequestBody(required = true) String newTopic){
 
-        Topic topic= topicService.createTopic(newTopic);
+        topicService.createTopic(newTopic);
         
-        return ResponseEntity.status(HttpStatus.CREATED).body(topic);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTopic);
     }
 
     @GetMapping
-    public ResponseEntity<List<Topic>> getAllTopics(){
+    public ResponseEntity<List<String>> getAllTopics(){
 
-        List<Topic> topics = topicService.getAllTopics();
+        List<String> topics = topicService.getAllTopics();
 
         return ResponseEntity.status(HttpStatus.OK).body(topics);
     }
