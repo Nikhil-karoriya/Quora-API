@@ -1,13 +1,18 @@
 package com.example.QuoraAPI.services;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.example.QuoraAPI.dto.LikeRequest;
+import com.example.QuoraAPI.models.Answer;
+import com.example.QuoraAPI.models.Comment;
 import com.example.QuoraAPI.models.LikeAnswer;
 import com.example.QuoraAPI.models.LikeComment;
 import com.example.QuoraAPI.models.LikeQuestion;
+import com.example.QuoraAPI.models.Question;
+import com.example.QuoraAPI.models.User;
 import com.example.QuoraAPI.repositories.AnswerRepository;
 import com.example.QuoraAPI.repositories.CommentRepository;
 import com.example.QuoraAPI.repositories.LikeAnswerRepository;
@@ -46,33 +51,90 @@ public class LikeService {
 
         UUID userId= likeRequest.getUserId();
         
+        User user ;
+
+        
+
         if(type.equals(ANSWERS) ){
-            
-            LikeAnswer newLike= LikeAnswer.builder()
-                                          .user(userRepository.findById(userId).get())
-                                          .answer(answerRepository.findById(id).get())
+        
+            Answer answer;
+
+            try{
+
+                user= userRepository.findById(userId).get();
+
+                answer= answerRepository.findById(id).get();
+
+            }
+            catch(NoSuchElementException ne){
+                return ;
+            }
+
+            LikeAnswer newLike= likeAnswerRepository.findByUserAndAnswer(user, answer);
+
+            if(newLike == null){
+                
+                newLike= LikeAnswer.builder()
+                                          .user(user)
+                                          .answer(answer)
                                           .build(); 
 
-            likeAnswerRepository.save(newLike);
+                likeAnswerRepository.save(newLike);
+            }
         }
 
         if(type.equals(QUESTIONS)){
 
-            LikeQuestion newLike = LikeQuestion.builder()
-                                               .user(userRepository.findById(userId).get())
-                                               .question(questionRepository.findById(id).get())
+            Question question;
+
+            try{
+
+                user= userRepository.findById(userId).get();
+
+                question= questionRepository.findById(id).get();
+            }
+            catch(NoSuchElementException ne){
+                return ;
+            }
+
+            LikeQuestion newLike= likeQuestionRepository.findByUserAndQuestion(user, question);
+
+            if(newLike == null){
+
+                newLike = LikeQuestion.builder()
+                                               .user(user)
+                                               .question(question)
                                                .build();
 
-            likeQuestionRepository.save(newLike);
+                likeQuestionRepository.save(newLike);
+            }
         }
 
         if(type.equals(COMMENTS)){
-            LikeComment newLike = LikeComment.builder()
-                                             .user(userRepository.findById(userId).get())
-                                             .comment(commentRepository.findById(id).get())
+
+            Comment comment;
+
+            try{
+
+                user= userRepository.findById(userId).get();
+
+                comment= commentRepository.findById(id).get();
+            }
+            catch(NoSuchElementException ne){
+                return ;
+            }
+
+            LikeComment newLike= likeCommentRepository.findByUserAndComment(user, comment);
+
+            if(newLike == null){
+                
+                newLike = LikeComment.builder()
+                                             .user(user)
+                                             .comment(comment)
                                              .build();
                 
-            likeCommentRepository.save(newLike);
+                likeCommentRepository.save(newLike);
+            }
         }
     }
     

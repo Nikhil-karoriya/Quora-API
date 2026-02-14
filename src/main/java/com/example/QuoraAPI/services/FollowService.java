@@ -1,9 +1,11 @@
 package com.example.QuoraAPI.services;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.example.QuoraAPI.dto.CommentResponse;
 import com.example.QuoraAPI.models.Follow;
 import com.example.QuoraAPI.models.User;
 import com.example.QuoraAPI.repositories.FollowRepository;
@@ -23,9 +25,20 @@ public class FollowService {
     @Transactional
     public void addFollower(UUID userId, UUID targetUserId) {
         
-        User follower= userRepository.findById(userId).get();
+        User follower;
         
-        User followee= userRepository.findById(targetUserId).get();
+        User followee;
+
+        try{
+
+            follower= userRepository.findById(userId).get();
+
+            followee= userRepository.findById(targetUserId).get();
+
+        }
+        catch(NoSuchElementException ne){
+            return ;
+        }
         
         Follow newFollow= followRepository.findByFollowerAndFollowee(follower, followee);
         

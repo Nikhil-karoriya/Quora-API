@@ -1,5 +1,6 @@
 package com.example.QuoraAPI.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -17,12 +18,13 @@ public class CommentResponse {
 
     private UUID commentId;
 
-    private UUID userId;
+    private String user;
 
-    private UUID answerId;
+    private String answer;
 
     private String text;
 
-    private UUID parentCommentId;
+    private String parentComment;
     
+    private List<String> childComments;
 }

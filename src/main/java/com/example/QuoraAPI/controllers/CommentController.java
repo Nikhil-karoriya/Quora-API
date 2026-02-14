@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +25,10 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{answerId}/answer")
-    public ResponseEntity<CommentResponse> addCommentOnAnswer(@RequestBody CommentRequest newComment){
+    public ResponseEntity<CommentResponse> addCommentOnAnswer(@PathVariable("answerId") UUID answerId,
+                                                             @RequestBody CommentRequest newComment){
         
-        CommentResponse response= commentService.addCommentOnAnswer( newComment);
+        CommentResponse response= commentService.addCommentOnAnswer(answerId, newComment);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -40,4 +42,11 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentResponse> getCommentByID(@PathVariable("commentId") UUID commentId){
+
+        CommentResponse response = commentService.getCommentByID(commentId);
+    
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

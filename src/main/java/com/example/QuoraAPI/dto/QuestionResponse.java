@@ -1,7 +1,6 @@
 package com.example.QuoraAPI.dto;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
