@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.QuoraAPI.dto.CommentRequest;
+import com.example.QuoraAPI.dto.CommentResponse;
 import com.example.QuoraAPI.models.Comment;
 import com.example.QuoraAPI.services.CommentService;
 
@@ -23,20 +25,20 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{answerId}/answer")
-    public ResponseEntity<Comment> addCommentOnAnswer(@RequestBody Comment newComment){
+    public ResponseEntity<CommentResponse> addCommentOnAnswer(@RequestBody CommentRequest newComment){
         
-        Comment comment= commentService.addCommentOnAnswer( newComment);
+        CommentResponse response= commentService.addCommentOnAnswer( newComment);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     
     @PostMapping("/{commentId}/comment")
-    public ResponseEntity<Comment> addCommentOnComment(@PathVariable("commentId") UUID commentId,
-                                                       @RequestBody Comment newComment){
+    public ResponseEntity<CommentResponse> addCommentOnComment(@PathVariable("commentId") UUID commentId,
+                                                       @RequestBody CommentRequest newComment){
         
-        Comment comment = commentService.addCommentOnComment(commentId, newComment);
+        CommentResponse response = commentService.addCommentOnComment(commentId, newComment);
     
-        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }
