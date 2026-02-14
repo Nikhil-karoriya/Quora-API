@@ -18,11 +18,11 @@ import lombok.Setter;
 public class Follow extends BaseModel {
     
     @ManyToOne
-    @JoinColumn(name = "follower_Id", nullable = false)
+    @JoinColumn(name = "follower_id", nullable = false)
     private User follower;
 
     @ManyToOne
-    @JoinColumn(name = "followee_Id", nullable = false)
+    @JoinColumn(name = "followee_id", nullable = false)
     private User followee;
 
 }

@@ -22,14 +22,14 @@ import lombok.Setter;
 public class Comment extends BaseModel {
     
     @ManyToOne
-    @JoinColumn(name = "user_Id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = false)
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "answer_Id", nullable = false)
+    @JoinColumn(name = "answer_id", nullable = false)
     private Answer answer;
 
     @OneToMany(mappedBy = "parentComment")

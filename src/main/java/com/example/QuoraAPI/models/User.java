@@ -36,10 +36,10 @@ public class User extends BaseModel{
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "follower")
-    private Set<Follow> followSet;
+    private Set<Follow> following;
 
     @OneToMany(mappedBy = "followee")
-    private Set<Follow> followerSet;
+    private Set<Follow> followers;
 
     @OneToMany(mappedBy = "user")
     private Set<LikeQuestion> likedQuestions;
