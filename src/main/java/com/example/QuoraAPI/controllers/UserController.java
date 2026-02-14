@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.QuoraAPI.dto.UserRequest;
 import com.example.QuoraAPI.dto.UserResponse;
-import com.example.QuoraAPI.models.User;
 import com.example.QuoraAPI.services.UserService;
 
 import lombok.AllArgsConstructor;
@@ -40,7 +39,7 @@ public class UserController {
 
         List<UserResponse> response= userService.getAllUsers();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{userId}")

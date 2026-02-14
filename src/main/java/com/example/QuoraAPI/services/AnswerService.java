@@ -2,6 +2,7 @@ package com.example.QuoraAPI.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -28,7 +29,14 @@ public class AnswerService {
     
     public AnswerResponse addAnswer(UUID questionId, AnswerRequest answerRequest) {
         
-        Question question= questionRepository.findById(questionId).get();
+        Question question;
+        
+        try{
+            question= questionRepository.findById(questionId).get();
+        }
+        catch(NoSuchElementException ne){
+            return AnswerResponse.builder().build();
+        }
         
         Answer answer= Answer.builder()
                              .text(answerRequest.getText())
@@ -44,7 +52,14 @@ public class AnswerService {
 
     public AnswerResponse editAnswer(UUID answerId, String text) {
 
-        Answer answer= answerRepository.findById(answerId).get();
+        Answer answer;
+        
+        try{
+            answer= answerRepository.findById(answerId).get();
+        }
+        catch(NoSuchElementException ne){
+            return AnswerResponse.builder().build();
+        }
 
         answer.setText(text);
 

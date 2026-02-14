@@ -3,6 +3,7 @@ package com.example.QuoraAPI.services;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -51,9 +52,14 @@ public class UserService {
 
     public UserResponse getUserInfo(UUID userId) {
         
-        User user= userRepository.findById(userId).get();
+        User user;
 
-        if(user == null) return new UserResponse();
+        try{
+            user= userRepository.findById(userId).get();
+        }
+        catch(NoSuchElementException ne){
+            return new UserResponse();   
+        }
 
         return createUserResponse(user);
     }
@@ -62,16 +68,19 @@ public class UserService {
 
         Optional<User> userDb= userRepository.findById(userId);
 
-        User user= userDb.get();
+        User user;
 
         User newUser= User.builder()
                        .username(userRequest.getUsername())
                        .email(userRequest.getEmail())
                        .bio(userRequest.getBio())
                        .build();
-        
-        if(user == null){
-            
+
+        try{
+            user = userDb.get();
+        }
+        catch(NoSuchElementException ne){
+
             user= userRepository.save(newUser);
 
             return createUserResponse(user);

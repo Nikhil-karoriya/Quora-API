@@ -1,9 +1,11 @@
 package com.example.QuoraAPI.services;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.example.QuoraAPI.dto.AnswerResponse;
 import com.example.QuoraAPI.dto.CommentRequest;
 import com.example.QuoraAPI.dto.CommentResponse;
 import com.example.QuoraAPI.models.Comment;
@@ -43,7 +45,14 @@ public class CommentService {
 
     public CommentResponse addCommentOnComment(UUID parentCommentId,CommentRequest newComment) {
         
-        Comment parentComment= commentRepository.findById(parentCommentId).get();
+        Comment parentComment;
+
+        try{
+            parentComment= commentRepository.findById(parentCommentId).get();
+        }
+        catch(NoSuchElementException ne){
+            return CommentResponse.builder().build();
+        }
         
         Comment comment = Comment.builder()
                                  .answer(answerRepository.findById(newComment.getAnswerId()).get())

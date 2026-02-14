@@ -22,7 +22,6 @@ public class User extends BaseModel{
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
     private String email;
 
     private String bio;
