@@ -31,7 +31,7 @@ public class UserController {
     private final UserAdapter userAdapter;
  
     @PostMapping
-    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest){
+    public ResponseEntity<UserResponse> registerUser( @RequestBody UserRequest userRequest){
         
         User newUser= userAdapter.toUser(userRequest);
         

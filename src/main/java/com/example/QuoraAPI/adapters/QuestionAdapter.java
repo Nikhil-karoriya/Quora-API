@@ -69,10 +69,8 @@ public class QuestionAdapter {
             TopicQuestion newTopicQuestion= TopicQuestion.builder()
                                                          .question(question)
                                                          .topic(topic)
-                                                         .build();
+                                                         .build(); 
 
-            topicQuestionRepository.save(newTopicQuestion); 
-            
             question.getTopicQuestions().add(newTopicQuestion);
         }
 
@@ -146,8 +144,6 @@ public class QuestionAdapter {
                                                         .question(question)
                                                         .topic(topic)
                                                         .build();
-
-        topicQuestionRepository.save(newTopicQuestion);
 
         question.getTopicQuestions().add(newTopicQuestion);
     }
