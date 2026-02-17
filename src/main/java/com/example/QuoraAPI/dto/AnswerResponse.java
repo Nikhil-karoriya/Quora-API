@@ -24,7 +24,6 @@ public class AnswerResponse {
 
     private String question;
 
-
     private List<String> comments;
 
     private List<String> likes;
