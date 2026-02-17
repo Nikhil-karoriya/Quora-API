@@ -1,6 +1,5 @@
 package com.example.QuoraAPI.services;
 
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -51,33 +50,20 @@ public class LikeService {
 
         UUID userId= likeRequest.getUserId();
         
-        User user ;
-
-        
+        User user= userRepository.findById(userId).get();
 
         if(type.equals(ANSWERS) ){
         
-            Answer answer;
-
-            try{
-
-                user= userRepository.findById(userId).get();
-
-                answer= answerRepository.findById(id).get();
-
-            }
-            catch(NoSuchElementException ne){
-                return ;
-            }
+            Answer answer= answerRepository.findById(id).get();
 
             LikeAnswer newLike= likeAnswerRepository.findByUserAndAnswer(user, answer);
 
             if(newLike == null){
                 
                 newLike= LikeAnswer.builder()
-                                          .user(user)
-                                          .answer(answer)
-                                          .build(); 
+                                   .user(user)
+                                   .answer(answer)
+                                   .build(); 
 
                 likeAnswerRepository.save(newLike);
             }
@@ -85,26 +71,16 @@ public class LikeService {
 
         if(type.equals(QUESTIONS)){
 
-            Question question;
-
-            try{
-
-                user= userRepository.findById(userId).get();
-
-                question= questionRepository.findById(id).get();
-            }
-            catch(NoSuchElementException ne){
-                return ;
-            }
+            Question question= questionRepository.findById(id).get();
 
             LikeQuestion newLike= likeQuestionRepository.findByUserAndQuestion(user, question);
 
             if(newLike == null){
 
                 newLike = LikeQuestion.builder()
-                                               .user(user)
-                                               .question(question)
-                                               .build();
+                                      .user(user)
+                                      .question(question)
+                                      .build();
 
                 likeQuestionRepository.save(newLike);
             }
@@ -112,26 +88,16 @@ public class LikeService {
 
         if(type.equals(COMMENTS)){
 
-            Comment comment;
-
-            try{
-
-                user= userRepository.findById(userId).get();
-
-                comment= commentRepository.findById(id).get();
-            }
-            catch(NoSuchElementException ne){
-                return ;
-            }
-
+            Comment comment= commentRepository.findById(id).get();
+        
             LikeComment newLike= likeCommentRepository.findByUserAndComment(user, comment);
 
             if(newLike == null){
                 
                 newLike = LikeComment.builder()
-                                             .user(user)
-                                             .comment(comment)
-                                             .build();
+                                     .user(user)
+                                     .comment(comment)
+                                     .build();
                 
                 likeCommentRepository.save(newLike);
             }

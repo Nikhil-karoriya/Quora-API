@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.QuoraAPI.adapters.CommentAdapter;
 import com.example.QuoraAPI.dto.CommentRequest;
 import com.example.QuoraAPI.dto.CommentResponse;
+import com.example.QuoraAPI.models.Comment;
 import com.example.QuoraAPI.services.CommentService;
 
 import lombok.AllArgsConstructor;
@@ -24,20 +26,30 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    private final CommentAdapter commentAdapter;
+
     @PostMapping("/{answerId}/answer")
     public ResponseEntity<CommentResponse> addCommentOnAnswer(@PathVariable("answerId") UUID answerId,
-                                                             @RequestBody CommentRequest newComment){
+                                                             @RequestBody CommentRequest commentRequest){
         
-        CommentResponse response= commentService.addCommentOnAnswer(answerId, newComment);
+        Comment newComment= commentAdapter.toCommentOnAnswer(commentRequest);                                                        
+
+        Comment comment= commentService.addCommentOnAnswer(answerId, newComment);
+
+        CommentResponse response= commentAdapter.toDto(comment);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     
     @PostMapping("/{commentId}/comment")
     public ResponseEntity<CommentResponse> addCommentOnComment(@PathVariable("commentId") UUID commentId,
-                                                       @RequestBody CommentRequest newComment){
+                                                       @RequestBody CommentRequest commentRequest){
         
-        CommentResponse response = commentService.addCommentOnComment(commentId, newComment);
+        Comment newComment= commentAdapter.toCommentOnComment(commentRequest);
+
+        Comment comment = commentService.addCommentOnComment(commentId, newComment);
+
+        CommentResponse response= commentAdapter.toDto(comment);
     
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -45,7 +57,9 @@ public class CommentController {
     @GetMapping("/{commentId}")
     public ResponseEntity<CommentResponse> getCommentByID(@PathVariable("commentId") UUID commentId){
 
-        CommentResponse response = commentService.getCommentByID(commentId);
+        Comment comment= commentService.getCommentByID(commentId);
+
+        CommentResponse response= commentAdapter.toDto(comment);
     
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
